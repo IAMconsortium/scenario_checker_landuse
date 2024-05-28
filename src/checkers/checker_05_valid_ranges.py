@@ -1,6 +1,5 @@
 import logging
 import numpy as np
-import math
 from utils.misc_utils import get_valid_data
 
 

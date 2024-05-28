@@ -1,6 +1,5 @@
 from pathlib import Path
 import logging
-import re
 
 
 def get_file_type(file_name) -> str:    

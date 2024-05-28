@@ -1,8 +1,6 @@
 from pathlib import Path
 import logging
 import json
-import os
-#import csv
 
 import numpy as np
 import xarray as xr
@@ -25,7 +23,7 @@ class DirectoryChecker:
         self, directory, log_path='logs', 
         base_path='', references=None,
         flag_spatial_completeness=True, flag_spatial_consistency=True,
-        flag_temporal_completeness=True, flag_temporal_consistency=True,
+        flag_temporal_consistency=True,
         flag_valid_ranges=True, 
         required_file_types=[], required_variables={}, required_coords={}, required_attributes=[], required_attributes_in_vars=[]
     ):
