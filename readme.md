@@ -68,6 +68,31 @@ It uses functions from `${checkerdir}/src/utils/path_utils.py`.
 Check that data values are in the required range (defined in `${checkerdir}/src/variable-info.json`).
 It uses functions from `${checkerdir}/src/utils/misc_utils.py`.
 
+
+**StatesTransitionsChecker**: `${checkerdir}/src/checkers/checker_06_states_transitions.py`
+
+1. For each `multiple-states_<XXX>`: check that the sum of all variables is close to 1.
+
+2. For each `multiple-transitions_<XXX>`: take the corresponding file `multiple-states_<XXX>` (with the same `<XXX>`) and check that the sum of the gross landuse transitions matches the difference in states between two consecutive years (except for the variables `secdf, primf, secdn, primn`).
+
+Algorithm for `(2)`: 
+
+- In `multiple-states_<...>`, we have variables `c3ann c3nfx c3per ...` , so for each variable `var` we take its value for the year Y: `var_states_Y`, and its value for the year Y+1: `var_states_(Y+1)`.
+   
+- In `multiple-transitions_<...>`, we have `c3ann_to_c3nfx c3ann_to_c3per c3ann_to_c4ann ...` , i.e. `X_to_var` and `var_to_X` with `var` from `multiple-states_<...>`.
+We calculate (for every year Y):
+`sum(X_to_var)` - the sum of all variables in `multiple-transitions_<...>` for the year Y with names `to_{var}`, and
+`sum(var_to_X)` - the sum of all variables in `multiple-transitions_<...>` for the year Y with names `{var}_to`, e.g. for `c3ann` at the year Y:<br>
+`sum(X_to_var) = sum ['c3nfx_to_c3ann', 'c3per_to_c3ann', 'c4ann_to_c3ann', 'c4per_to_c3ann', 'primf_to_c3ann', 'primn_to_c3ann', 'secdf_to_c3ann', 'secdn_to_c3ann', 'urban_to_c3ann', 'pastr_to_c3ann', 'range_to_c3ann']`<br>
+`sum(var_to_X) = sum ['c3ann_to_c3nfx', 'c3ann_to_c3per', 'c3ann_to_c4ann', 'c3ann_to_c4per', 'c3ann_to_secdf', 'c3ann_to_secdn', 'c3ann_to_urban', 'c3ann_to_pastr', 'c3ann_to_range']`
+
+
+- We want this equation to be true: `sum(X_to_var) - sum(var_to_X) = var_states_(Y+1) - var_states_Y`, <br>
+so for each variable we calculate `delta` which should be close to 0:<br>
+`delta = [ sum(X_to_var) - sum(var_to_X) ] - [ states_(Y+1) - states_Y) ]`
+
+
+
 ## Other files
 
 - `${checkerdir}/run_script.py`:  run the "main" function; `${checkerdir}/src/checkers/directory_checker.py` and `${checkerdir}/scripts/check_file.py`: configure the parameters and run all checkers;
