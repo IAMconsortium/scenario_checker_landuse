@@ -11,7 +11,6 @@ class SpatialConsistencyChecker:
     def __init__(self, dschecker):
         self.dschecker = dschecker
 
-        # Read only attributes
         self.file = dschecker.file
         self.ds = dschecker.ds
         self.expected_lat = dschecker.expected_lat
@@ -26,21 +25,24 @@ class SpatialConsistencyChecker:
         grid_equal_lat = -1
 
         if (not np.array_equal(lon,self.expected_lon)) and (not np.array_equal(lon[::-1],self.expected_lon)):
-            print(f"lon: {lon}")
-            print(f"expected lon: {self.expected_lon}")
+            
             logging.error(
-                f'Grid for lon does not correspond to the expected one'
+                f"Grid for lon does not correspond to the expected one:"
+                f"lon: {lon}, expected lon: {self.expected_lon}"
             )
             grid_equal_lon = 0
+
         else:
             grid_equal_lon = 1
+
         if (not np.array_equal(lat,self.expected_lat)) and (not np.array_equal(lat[::-1],self.expected_lat)):
-            print(f"lat: {lat}")
-            print(f"expected lat: {self.expected_lat}")
             logging.error(
-                f'Grid for lat does not correspond to the expected one'
+                f"Grid for lat does not correspond to the expected one:"
+                f"lat: {lat}, expected lat: {self.expected_lat}"
             )
+            
             grid_equal_lat = 0
+            
         else:
             grid_equal_lat = 1
         

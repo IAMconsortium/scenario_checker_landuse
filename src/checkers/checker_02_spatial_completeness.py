@@ -16,7 +16,6 @@ class SpatialCompletenessChecker:
     def __init__(self, dschecker):
         self.dschecker = dschecker
 
-        # Read only attributes
         self.ds = dschecker.ds
         self.file = dschecker.file
         self.data_source = dschecker.data_source
@@ -65,7 +64,10 @@ class SpatialCompletenessChecker:
                         # as we suppose that the reference mask is same for all vars
                         if var in self.reference_file:
                             mask = np.isnan(self.reference_file[var].isel(time=1).values).astype(int)
-                            print(f'Mask is taken from the reference file for var={var}')
+                            if (i==0):
+                                logging.info(
+                                    f"    Mask is taken from the reference file for var={var}"
+                                )
                             
                             
                             # This is for saving masks 
@@ -93,7 +95,9 @@ class SpatialCompletenessChecker:
                             vars_from_reference = [v for v in vars_from_reference if v not in vars_to_remove]
                             first_var = vars_from_reference[0]
                             mask = np.isnan(self.reference_file[first_var].isel(time=0).values) 
-                            print(f'No reference mask for {var}, mask is taken from the reference mask for {first_var}')
+                            logging.info(
+                                f"No reference mask for {var}, mask is taken from the reference mask for {first_var}"
+                            )
                             
                         valid_data = get_valid_data(data, mask)
 
@@ -122,6 +126,7 @@ class SpatialCompletenessChecker:
                         # This is for saving NaN locations 
                         # Delete later if not needed
                         # ---- start
+
                         '''
                         lat_nans =  data_array.lat.values
                         lon_nans =  data_array.lon.values
@@ -138,6 +143,7 @@ class SpatialCompletenessChecker:
                         encoding = {'nan_locations': {'_FillValue': 1.}}       
                         nan_locations_da.to_netcdf(f"{nans_dir}/nan_locations_{i}.nc",encoding=encoding)
                         '''
+                        
                         # ---- end
                             
                     self.results['spatial_completeness'].append(result_timestep)
@@ -146,11 +152,11 @@ class SpatialCompletenessChecker:
                 if timesteps_err != []:
                     if len(timesteps_err) == len(data_array.time.values):
                         logging.error(
-                            f'Unexpected NaN(s) found in {var} at all timesteps={timesteps_err}'
+                            f'Unexpected NaN(s) found in {var} at all timesteps {timesteps_err}'
                         ) 
                     else:
                         logging.error(
-                            f'NaN(s) found in {var} at timesteps={timesteps_err}'
+                            f'NaN(s) found in {var} at timesteps {timesteps_err}'
                         ) 
 
             else:

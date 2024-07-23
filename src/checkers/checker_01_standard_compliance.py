@@ -15,7 +15,6 @@ class StandardComplianceChecker:
     def __init__(self, dschecker):
         self.dschecker = dschecker
 
-        # Read only attributes
         self.file = dschecker.file
         self.data_source = dschecker.data_source 
         self.ds = dschecker.ds
@@ -25,6 +24,7 @@ class StandardComplianceChecker:
         self.required_attributes_in_vars = dschecker.required_attributes_in_vars
         self.reference_file = dschecker.reference_file
         self.varname = dschecker.varname
+
         # Check results
         self.results = {}
 
@@ -96,7 +96,7 @@ class StandardComplianceChecker:
         
         attributes_in_vars = self.required_attributes_in_vars
         
-        vars_to_remove = ['longitude', 'lon', 'lon_bnds', 'latitude', 'lat', 'lat_bnds', 'crs', 'calendar', \
+        vars_to_remove = ['longitude', 'lon', 'lon_bnds', 'lon_bounds', 'latitude', 'lat', 'lat_bnds', 'lat_bounds', 'crs', 'calendar', \
                         '_FillValue', 'missing_value', 'time', 'time_bnds', 'gas', 'sector', 'sector_bnds', 'year', 'month', 'unit', 'method', \
                         'level', 'level_bnds', 'bounds_lon', 'bounds_lat', 'bounds_time']
         
@@ -104,8 +104,10 @@ class StandardComplianceChecker:
         
         for attr_var in attributes_in_vars:
             self.results[attr_var] = 0
+
             for var in vars_to_check: 
-                if not hasattr(var, attr_var):
+
+                if not hasattr(self.ds[var], attr_var):
                     self.results[attr_var] = 1
                     logging.error(f'Variable {var} missing compulsory attribute {attr_var} as indicated in config.json')
 

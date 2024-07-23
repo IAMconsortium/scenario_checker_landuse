@@ -1,5 +1,5 @@
 {
-    "directory":"/esarchive/scratch/Earth/dkuznets/rescue_proj/scenario_checker/lu_data", 
+    "directory":"/esarchive/scratch/esarchive_ftp/rescue/forcings/land_use/2024-04-25", 
     "references": {
         "multiple-management": ["/esarchive/scratch/esarchive_ftp/rescue/reference/landuse/multiple-management_input4MIPs_landState_ScenarioMIP_UofMD-IMAGE-ssp126-2-1-f_gn_2015-2100.nc"],
         "multiple-states": ["/esarchive/scratch/esarchive_ftp/rescue/reference/landuse/multiple-states_input4MIPs_landState_ScenarioMIP_UofMD-IMAGE-ssp126-2-1-f_gn_2015-2100.nc"],
@@ -11,6 +11,7 @@
     "flag_spatial_consistency":true,
     "flag_temporal_consistency":true,
     "flag_valid_ranges":true,
+    "flag_states_transitions": true,
     "required_file_types": ["multiple-management", "multiple-states", "multiple-transitions"],
     "required_variables":{
         "multiple-management": ["fertl_c3ann", "irrig_c3ann", "crpbf_c3ann", 

@@ -58,10 +58,12 @@ def run_checker(args, temp_dir):
         "flag_spatial_consistency": args.flag_spatial_consistency,
         "flag_temporal_consistency": args.flag_temporal_consistency,
         "flag_valid_ranges": args.flag_valid_ranges,
+        "flag_states_transitions": args.flag_states_transitions,
         "required_file_types": args.required_file_types,
         "required_variables": args.required_variables,
         "required_coords": args.required_coords,
         "required_attributes": args.required_attributes,
+        "required_attributes_in_vars": args.required_attributes_in_vars,
         "logging_level": "WARNING"
     }
 

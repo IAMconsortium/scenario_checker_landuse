@@ -25,7 +25,7 @@ def check_config_file(config: Dict) -> Dict:
     # Check flags. If not present, default to true
     flags = ['flag_spatial_completeness', 'flag_spatial_consistency',
              'flag_temporal_completeness', 'flag_temporal_consistency',
-             'flag_valid_ranges'
+             'flag_valid_ranges', 'flag_states_transitions'
             ]
 
     for flag in flags:

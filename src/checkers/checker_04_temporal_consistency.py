@@ -14,7 +14,6 @@ class TemporalConsistencyChecker:
 
     def __init__(self, dschecker):
 
-        # Read only attributes
         self.file = dschecker.file
         self.directory = dschecker.directory
         self.ds = dschecker.ds

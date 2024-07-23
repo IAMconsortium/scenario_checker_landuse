@@ -19,3 +19,8 @@ run_checker_bash
 load_modules*
 run_checker_bash_lu
 rm_logs
+config_lu_testing.json
+test_lu/
+run_checker_bash_lu_testing
+runs
+

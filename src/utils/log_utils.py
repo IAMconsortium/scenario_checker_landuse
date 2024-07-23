@@ -17,8 +17,15 @@ def update_log_paths(root_dir, check_dir: Path):
 
     # Create directory for logs (a new one for each run) 
     time_now = datetime.datetime.now() 
-    log_dir = Path(f'{root_dir}/{check_dir.name}___{time_now.year}-{time_now.month}-{time_now.day}-{time_now.hour}-{time_now.minute}')
-    log_dir.mkdir(parents=True, exist_ok=True) 
+    timestamp = f'{time_now.year}-{time_now.month}-{time_now.day}-{time_now.hour}-{time_now.minute}'
+    log_dir_name = f'{root_dir}/{check_dir.name}___{timestamp}'
+    log_dir = Path(log_dir_name)
+    counter = 1
+    while log_dir.exists():
+        log_dir = Path(f'{log_dir_name}___{counter}')
+        counter += 1
+    
+    log_dir.mkdir(parents=True) #, exist_ok=False)
         
     # Set up logging to terminal
     handler_stdout = logging.StreamHandler(stream=sys.stdout)

@@ -5,6 +5,9 @@ The data checker relies on the following libraries:
 
 numpy, xarray, argparse, dateutil.relativedelta, datetime, json, sys, os, pathlib, re, stat, logging, typing
 
+Install requirements with:
+
+`pip install numpy xarray python-dateutil`
 
 ## How to run
 

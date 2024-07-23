@@ -11,6 +11,7 @@ from checkers.checker_02_spatial_completeness import SpatialCompletenessChecker
 from checkers.checker_03_spatial_consistency import SpatialConsistencyChecker
 from checkers.checker_04_temporal_consistency import TemporalConsistencyChecker
 from checkers.checker_05_valid_ranges import ValidRangesChecker
+from checkers.checker_06_states_transitions import StatesTransitionsChecker
 
 from utils.path_utils import get_file_type, get_activity_id, \
                              get_dataset_category, get_target_mip, \
@@ -22,10 +23,13 @@ class DirectoryChecker:
     def __init__(
         self, directory, log_path='logs', 
         base_path='', references=None,
-        flag_spatial_completeness=True, flag_spatial_consistency=True,
+        flag_spatial_completeness=True, 
+        flag_spatial_consistency=True,
         flag_temporal_consistency=True,
         flag_valid_ranges=True, 
-        required_file_types=[], required_variables={}, required_coords={}, required_attributes=[], required_attributes_in_vars=[]
+        flag_states_transitions=True, 
+        required_file_types=[], required_variables={}, required_coords={}, 
+        required_attributes=[], required_attributes_in_vars=[]
     ):
 
         # Set up basic logging
@@ -86,6 +90,7 @@ class DirectoryChecker:
         self.flag_spatial_consistency = flag_spatial_consistency
         self.flag_temporal_consistency = flag_temporal_consistency
         self.flag_valid_ranges = flag_valid_ranges
+        self.flag_states_transitions = flag_states_transitions
         
         self.base_path = base_path
         
@@ -115,12 +120,12 @@ class DirectoryChecker:
                             )
                         self.boundaries[var] = variables[var]['boundaries']
                     else:
-                        logging.debug(
+                        logging.info(
                             f"Valid range of variable {var} is unknown - please set it in src/variable-info.json"
                             )
                 for var in list(variables.keys()):
                     if var not in self.required_variables:
-                        logging.debug(
+                        logging.info(
                             f"Valid range of variable {var} is defined but the variable is not in the required variable list")
         return       
     
@@ -294,9 +299,20 @@ class DirectoryChecker:
                                     self.checker_results[file.name] = {
                                         **self.checker_results[file.name], **chk.results
                                         }
+                                    
+                                if self.flag_states_transitions:
+                                    logging.info(
+                                        f'Check for landuse: sum of the gross landuse transitions should match the difference in states between two consecutive years'
+                                    )
+                                    chk = StatesTransitionsChecker(self)
+                                    chk.run_checker()
+                                    self.checker_results[file.name] = {
+                                        **self.checker_results[file.name], **chk.results
+                                        }
+                                    
                     else:
                         
-                        logging.error(
+                        logging.warning(
                             f'File {self.file} is not a landuse file. Skipping all tests on this file'
                         )    
             
